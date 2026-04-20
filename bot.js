@@ -445,7 +445,7 @@ async function startSession(chatId, ns) {
 async function endSession(chatId, ns) {
   ns.endedAt = Date.now();
   if (ns.pinnedMessageId) {
-    try { await bot.unpinChatMessage(chatId, { message_id: ns.pinnedMessageId }); } catch (_) {}
+    try { await bot.unpinAllChatMessages(chatId); } catch (e) { console.error('Failed to unpin:', e.message); }
     ns.pinnedMessageId = null;
   }
   await showStep7Reflection(chatId, ns);
@@ -691,7 +691,7 @@ bot.onText(/\/cancel/, async (msg) => {
   }
   if (ns.sessionTimeout) clearTimeout(ns.sessionTimeout);
   if (ns.pinnedMessageId) {
-    try { await bot.unpinChatMessage(chatId, { message_id: ns.pinnedMessageId }); } catch (_) {}
+    try { await bot.unpinAllChatMessages(chatId); } catch (e) { console.error('Failed to unpin:', e.message); }
   }
   nastroySessions.delete(chatId);
   await send(chatId, `Настройка отменена. До следующего раза. 🕯`);
