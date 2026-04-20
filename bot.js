@@ -215,7 +215,7 @@ async function showIntro(chatId, ns) {
   ns.state = 'intro';
   await send(chatId,
     `Этот бот сделан на основе статьи:\n\n` +
-    `Шаньков, Ф. М. (2020). Психотехника Ф.Е. Василюка: настройка на сложную деятельность.`
+    `[Шаньков, Ф. М. (2020). Психотехника Ф.Е. Василюка: настройка на сложную деятельность.](https://cyberleninka.ru/article/n/psihotehnika-f-e-vasilyuka-nastroi-ka-na-slozhnuyu-deyatelnost)`
   ).catch(() => {});
   await send(chatId,
     `🕯 *Режим НАСТРОЙ*\n\n` +
