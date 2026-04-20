@@ -13,6 +13,14 @@ if (!TOKEN || !CHAT_ID) {
 const bot = new TelegramBot(TOKEN, { polling: true });
 const MIN_MS = 60 * 1000;
 
+// Register commands so the "/" button in Telegram shows them
+bot.setMyCommands([
+  { command: 'nastroy', description: 'Начать ритуал настройки' },
+  { command: 'stats',   description: 'Ваша статистика глубокой работы' },
+  { command: 'framing', description: 'Изменить духовный / секулярный формат' },
+  { command: 'cancel',  description: 'Отменить текущую настройку' },
+]).catch(e => console.error('Failed to set commands:', e.message));
+
 // ---------------------------------------------------------------------------
 // Persistence
 // ---------------------------------------------------------------------------
