@@ -19,6 +19,22 @@ const MIN_MS = 60 * 1000;
 
 const PROFILES_FILE = './user_profiles.json';
 const SESSION_LOG_FILE = './session_log.json';
+const SEEN_USERS_FILE = './seen_users.json';
+
+function loadSeenUsers() {
+  try {
+    if (fs.existsSync(SEEN_USERS_FILE)) return JSON.parse(fs.readFileSync(SEEN_USERS_FILE, 'utf8'));
+  } catch (e) { console.error('Failed to load seen users:', e.message); }
+  return [];
+}
+
+function markUserSeen(userId) {
+  if (seenUsers.includes(userId)) return;
+  seenUsers.push(userId);
+  try { fs.writeFileSync(SEEN_USERS_FILE, JSON.stringify(seenUsers)); } catch (e) { console.error(e.message); }
+}
+
+let seenUsers = loadSeenUsers();
 
 function loadJSON(file) {
   try {
@@ -570,6 +586,15 @@ bot.onText(/\/start/, async (msg) => {
   }
 
   // Private: welcome
+  const isFirstTime = !seenUsers.includes(msg.from.id);
+  if (isFirstTime) {
+    markUserSeen(msg.from.id);
+    await send(chatId,
+      `Этот бот сделан на основе статьи:\n\n` +
+      `Шаньков, Ф. М. (2020). Психотехника Ф.Е. Василюка: настройка на сложную деятельность.`
+    ).catch(() => {});
+  }
+
   await send(chatId,
     `🕯 *Writeous НАСТРОЙ*\n\n` +
     `Это бот для настройки к глубокой работе по психотехнике Фёдора Василюка.\n\n` +
