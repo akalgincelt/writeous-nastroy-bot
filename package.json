@@ -1,0 +1,13 @@
+{
+  "name": "nastroy-bot",
+  "version": "1.0.0",
+  "description": "Writeous НАСТРОЙ bot — Vasilyuk pre-session attunement ritual",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
