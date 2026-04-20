@@ -16,6 +16,7 @@ const MIN_MS = 60 * 1000;
 // Register commands so the "/" button in Telegram shows them
 bot.setMyCommands([
   { command: 'nastroy', description: 'Начать ритуал настройки' },
+  { command: 'stop',    description: 'Завершить рабочую сессию досрочно' },
   { command: 'stats',   description: 'Ваша статистика глубокой работы' },
   { command: 'framing', description: 'Изменить духовный / секулярный формат' },
   { command: 'cancel',  description: 'Отменить текущую настройку' },
@@ -666,8 +667,25 @@ bot.onText(/\/nastroy/, async (msg) => {
 });
 
 // ---------------------------------------------------------------------------
-// /cancel
+// /stop — end active work session early, go straight to step 7
 // ---------------------------------------------------------------------------
+
+bot.onText(/\/stop/, async (msg) => {
+  if (msg.chat.type !== 'private') return;
+  const chatId = String(msg.chat.id);
+  const ns = nastroySessions.get(chatId);
+
+  if (!ns || ns.state !== 'session_active') {
+    await send(chatId, `Сейчас нет активной рабочей сессии.`);
+    return;
+  }
+
+  if (ns.sessionTimeout) clearTimeout(ns.sessionTimeout);
+  await endSession(chatId, ns);
+});
+
+// ---------------------------------------------------------------------------
+// /cancel
 
 bot.onText(/\/cancel/, async (msg) => {
   const chatId = String(msg.chat.id);
