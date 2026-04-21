@@ -475,7 +475,7 @@ async function showStep7Goal(chatId, ns) {
 async function showStep7Next(chatId, ns) {
   ns.state = 'step7_next';
   await send(chatId,
-    `*3. Что остаётся на следующий раз?*\n_(первая фраза или шаг — ваш «shutdown complete»)_`
+    `*3. Что остаётся на следующий раз?*\n_(первая фраза или шаг)_`
   );
 }
 
